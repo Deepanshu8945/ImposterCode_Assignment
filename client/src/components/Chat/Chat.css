@@ -4,6 +4,17 @@
   align-items: center;
   height: 100vh;
   background: var(--bg-color);
+  flex-direction: row;
+}
+
+.editorContainer {
+  width: 50%;
+  height: 85%;
+  margin-right: 20px;
+  background: #1e1e1e;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
 }
 
 .container {
@@ -13,9 +24,9 @@
   background: var(--chat-bg);
   border-radius: var(--border-radius);
   height: 85%;
-  width: 60%; /* Increased default width */
+  width: 35%;
   box-shadow: var(--shadow);
-  overflow: hidden; /* Hide overflow */
+  overflow: hidden;
 }
 
 @media (min-width: 320px) and (max-width: 480px) {

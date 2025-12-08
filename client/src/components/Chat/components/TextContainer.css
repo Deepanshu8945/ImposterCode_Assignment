@@ -1,15 +1,17 @@
 .textContainer {
   display: flex;
   flex-direction: column;
-  margin-left: 100px;
+  margin-left: 20px;
   color: white;
-  height: 60%;
-  justify-content: space-between;
-  background: rgba(255, 255, 255, 0.1); /* Glass effect */
+  height: 85%;
+  width: 15%;
+  justify-content: flex-start;
+  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   padding: 20px;
   border-radius: 15px;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
 }
 
 .activeContainer {

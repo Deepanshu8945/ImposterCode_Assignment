@@ -8,9 +8,8 @@ import Input from "./components/Input";
 import Messages from "./components/Messages";
 import TextContainer from "./components/TextContainer";
 import TypingIndicator from "./components/TypingIndicator";
+import CodeEditor from "./CodeEditor";
 
-
-let socket;
 
 const Chat = () => {
   const [name, setName] = useState("");
@@ -19,6 +18,7 @@ const Chat = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [typingUser , setTypingUser] = useState("");
+  const [socket, setSocket] = useState(null);
 
   const ENDPOINT = "http://localhost:3001";
 
@@ -32,17 +32,20 @@ const Chat = () => {
     setName(name);
     setRoom(room);
 
-    socket = io(ENDPOINT);
-
-    socket.emit("join_room", { username: name, room: room });
+    const newSocket = io(ENDPOINT);
+    setSocket(newSocket);
 
     return () => {
-      socket.disconnect();
-      socket.off();
+      newSocket.disconnect();
+      newSocket.off();
     };
   }, [location.search, ENDPOINT]);
 
   useEffect(() => {
+    if (!socket) return;
+
+    socket.emit("join_room", { username: name, room: room });
+
     let typingTimeout = null;
 
     socket.on("receive_message", (message) => {
@@ -60,7 +63,7 @@ const Chat = () => {
     socket.on("room_users", (users) => {
       setUsers(users);
     });
-  }, []);
+  }, [socket, name, room]);
 
   const sendMessage = (event) => {
     event.preventDefault();
@@ -80,11 +83,14 @@ const Chat = () => {
   };
 
   const handleTyping = ()=>{
-    socket.emit("typing", {room, name});
+    if(socket) socket.emit("typing", {room, name});
   }
 
   return (
     <div className="outerContainer">
+      <div className="editorContainer">
+        <CodeEditor socket={socket} room={room} name={name} />
+      </div>
       <div className="container">
         <InfoBar room={room} />
         <Messages messages={messages} name={name} />
